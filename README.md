@@ -1,7 +1,6 @@
 # PulseBand — The AI-Powered Wellness Tracker
 
-A static, multi-page marketing site for the PulseBand product launch. No build step, no framework, no backend — just HTML, CSS and vanilla JavaScript.
-
+A static, multi-page marketing site for the PulseBand product launch.The first task at decode labs internship project. 100% static, no backend.
 ## Structure
 
 ```
