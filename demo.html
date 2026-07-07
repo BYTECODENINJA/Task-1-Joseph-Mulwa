@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo — PulseBand</title>
+    <meta name="description" content="Try a simulated PulseBand: heart rate readout, sleep chart and hydration nudge, running entirely in your browser.">
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+    <nav class="nav-bar wrap" aria-label="Primary">
+        <a class="brand" href="index.html"><img src="assets/images/logoWhite123.png" alt="PulseBand"></a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+            <span class="nav-toggle-bars"></span>
+        </button>
+        <div class="nav-menu" id="nav-menu">
+            <a class="nav-link" href="index.html">Home</a>
+            <a class="nav-link" href="product.html">Product</a>
+            <a class="nav-link" href="pricing.html">Pricing</a>
+            <a class="nav-link" href="demo.html" aria-current="page">Demo</a>
+            <a class="nav-link" href="blog/index.html">Blog</a>
+            <a class="nav-link" href="about.html">About</a>
+            <a class="btn btn-primary nav-cta" href="signup.html">Get PulseBand</a>
+        </div>
+    </nav>
+</header>
+
+<main id="main">
+
+    <section class="section-tight">
+        <div class="wrap">
+            <span class="eyebrow">No band required</span>
+            <h1>Try PulseBand in your browser.</h1>
+            <p class="lede">This is a simulated version of the on-band experience — real interactions, invented data. Everything here runs locally; nothing is sent anywhere.</p>
+        </div>
+    </section>
+
+    <section class="section-tight">
+        <div class="wrap">
+            <div class="demo-panel">
+
+                <div class="demo-tabs" role="tablist" aria-label="Demo widgets">
+                    <button class="demo-tab" id="tab-hr" role="tab" aria-selected="true" aria-controls="view-hr">Heart rate</button>
+                    <button class="demo-tab" id="tab-sleep" role="tab" aria-selected="false" aria-controls="view-sleep">Sleep cycle</button>
+                    <button class="demo-tab" id="tab-hydration" role="tab" aria-selected="false" aria-controls="view-hydration">Hydration</button>
+                </div>
+
+                <div class="demo-view is-active" id="view-hr" role="tabpanel" aria-labelledby="tab-hr">
+                    <h2>Heart rate simulator</h2>
+                    <p>Pick an activity and watch a simulated live reading. Your last reading is saved in this browser via <code>localStorage</code>.</p>
+                    <div class="hr-readout">
+                        <span class="bpm" id="bpm-value">64</span>
+                        <span>bpm</span>
+                    </div>
+                    <svg class="hr-svg" viewBox="0 0 600 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                        <path id="hr-path" d=""></path>
+                    </svg>
+                    <div class="hr-controls">
+                        <div class="field" style="min-width:180px;">
+                            <label for="hr-mode">Activity</label>
+                            <select id="hr-mode">
+                                <option value="resting">Resting</option>
+                                <option value="walking">Walking</option>
+                                <option value="running">Running</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="hr-start" type="button">Start reading</button>
+                        <button class="btn btn-secondary" id="hr-stop" type="button">Stop</button>
+                    </div>
+                </div>
+
+                <div class="demo-view" id="view-sleep" role="tabpanel" aria-labelledby="tab-sleep">
+                    <h2>Sleep cycle chart</h2>
+                    <p>Toggle between a single night's hourly stages and a week-long overview. Your last selection is remembered.</p>
+                    <div class="field" style="max-width:220px;">
+                        <label for="sleep-range">Range</label>
+                        <select id="sleep-range">
+                            <option value="night">Last night, by hour</option>
+                            <option value="week">Last 7 nights</option>
+                        </select>
+                    </div>
+                    <div class="sleep-bars" id="sleep-bars" aria-hidden="true"></div>
+                    <div class="sleep-legend">
+                        <span><span class="legend-dot" style="background:var(--sky)"></span>Light / REM</span>
+                        <span><span class="legend-dot" style="background:var(--ink)"></span>Deep sleep</span>
+                    </div>
+                </div>
+
+                <div class="demo-view" id="view-hydration" role="tabpanel" aria-labelledby="tab-hydration">
+                    <h2>Hydration reminder</h2>
+                    <p>PulseBand nudges you when your logged intake falls behind your estimated sweat rate. Trigger a sample nudge below — it also appears automatically a few seconds after this page loads.</p>
+                    <button class="btn btn-primary" id="hydration-trigger" type="button">Simulate a hydration nudge</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-mocha-tint">
+        <div class="wrap" style="text-align:center;">
+            <h2>Like what you tried?</h2>
+            <p class="lede" style="margin-inline:auto;">The real band adds a continuous sensor, not a randomizer.</p>
+            <a class="btn btn-primary" href="signup.html">Reserve your PulseBand</a>
+        </div>
+    </section>
+
+</main>
+
+<div class="hydration-toast" id="hydration-toast" role="status" aria-live="polite">
+    <span aria-hidden="true">💧</span>
+    <div>
+        <strong>Time for water.</strong>
+        <p style="margin:0.2rem 0 0;color:rgba(255,255,255,0.85);">You're 400ml behind your estimate for this time of day.</p>
+    </div>
+    <button id="hydration-dismiss" aria-label="Dismiss hydration reminder">×</button>
+</div>
+
+<footer class="site-footer">
+    <div class="wrap">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="assets/images/logoWhite123.png" alt="PulseBand">
+                <p style="color:rgba(255,255,255,0.7);max-width:32ch;">The wellness tracker that explains itself. Made by a small team obsessed with getting the basics right.</p>
+                <div class="social-row">
+                    <a href="https://twitter.com" aria-label="PulseBand on Twitter"><svg viewBox="0 0 24 24"><path d="M22 5.9c-.7.3-1.5.6-2.3.7a4 4 0 0 0 1.7-2.2 8 8 0 0 1-2.5 1 4 4 0 0 0-6.9 3.6A11.4 11.4 0 0 1 3.7 4.6a4 4 0 0 0 1.2 5.3 4 4 0 0 1-1.8-.5v.1a4 4 0 0 0 3.2 3.9 4 4 0 0 1-1.8.1 4 4 0 0 0 3.7 2.8A8 8 0 0 1 2 17.9a11.3 11.3 0 0 0 6.1 1.8c7.3 0 11.3-6 11.3-11.3v-.5A8 8 0 0 0 22 5.9z"/></svg></a>
+                    <a href="https://instagram.com" aria-label="PulseBand on Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+                    <a href="https://linkedin.com" aria-label="PulseBand on LinkedIn"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="11" x2="8" y2="16"/><line x1="8" y1="8" x2="8" y2="8"/><line x1="12" y1="11" x2="12" y2="16"/><path d="M12 13c0-1.5 1-2 2-2s2 .8 2 2v3"/></svg></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="blog/index.html">Blog</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="signup.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:hello@getpulseband.com">hello@getpulseband.com</a></li>
+                    <li><a href="tel:+18005550142">+1 (800) 555-0142</a></li>
+                    <li>Nairobi · Remote-first team</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 PulseBand, Inc. All rights reserved.</span>
+            <span>Built with semantic HTML, CSS Grid and vanilla JS.</span>
+        </div>
+    </div>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/demo.js"></script>
+</body>
+</html>
